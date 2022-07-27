@@ -5,18 +5,29 @@ import Button from '@mui/material/Button'
 import { useNavigate } from 'react-router-dom'
 
 const Search = () => {
-  const searchName = useRef('')
+  const searchName = useRef('destiny5420')
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
+
+  async function getRepoList(repoAPI) {
+    try {
+      const jsonData = await fetch(repoAPI)
+      const data = await jsonData.json()
+      console.log(data)
+
+      navigate(`/users/${searchName.current}/repos`)
+    } catch (error) {
+      throw new Error(`Get error while getRepoList function, error message: `, error)
+    }
+  }
 
   async function fetchUserData(userName) {
     try {
       const jsonData = await fetch(`https://api.github.com/users/${userName}`)
       const data = await jsonData.json()
 
-      console.log(data)
-      navigate(`/users/${searchName.current}/repos`)
+      getRepoList(data.repos_url)
     } catch (error) {
       throw new Error(`Get error while fetchUserData function, error message: `, error)
     }
