@@ -2,23 +2,31 @@ import React, { useState, useEffect, useRef } from 'react'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import { useNavigate } from 'react-router-dom'
 
 const Search = () => {
   const searchName = useRef('')
   const searchInputEl = useRef(null)
 
-  async function fetchUserData(userName) {
-    const jsonData = await fetch(`https://api.github.com/users/${userName}`)
-    const data = await jsonData.json()
+  const navigate = useNavigate()
 
-    console.log(data)
+  async function fetchUserData(userName) {
+    try {
+      const jsonData = await fetch(`https://api.github.com/users/${userName}`)
+      const data = await jsonData.json()
+
+      console.log(data)
+      navigate(`/users/${searchName.current}/repos`)
+    } catch (error) {
+      throw new Error(`Get error while fetchUserData function, error message: `, error)
+    }
   }
 
   function handlerSearch() {
     fetchUserData(searchName.current)
   }
 
-  console.log(`re-render`)
+  console.log(`[SEARCH] re-render`)
 
   return (
     <>
