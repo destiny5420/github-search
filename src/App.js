@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
+// Css
 import './App.scss'
 
 // Component
@@ -12,10 +14,9 @@ import Footer from 'components/Footer/Footer.js'
 // UI
 import Box from '@mui/material/Box'
 
-// Plugin
+// Custom
 import { UserContext } from './assets/js/ContextManager'
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Console from 'js/utils/console.js'
 
 function App() {
   // User Context
@@ -33,6 +34,12 @@ function App() {
     follows,
     setFollows
   }
+
+  useEffect(() => {
+    Console()
+  }, [])
+
+  console.log(`[APP] re-render`)
 
   return (
     <UserContext.Provider value={userContextData}>
