@@ -15,7 +15,7 @@ const User = () => {
       <Paper
         sx={{
           margin: '0.75rem auto',
-          width: '75%',
+          width: '90%',
           maxWidth: '760px',
           padding: '0 1rem',
           backgroundColor: '#fff'
