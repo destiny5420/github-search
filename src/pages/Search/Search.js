@@ -5,14 +5,13 @@ import Button from '@mui/material/Button'
 import { UserContext } from '../../assets/js/ContextManager'
 import { useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { height, width } from '@mui/system'
 
 const Search = () => {
   const searchName = useRef('destiny5420')
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
-  const { setName } = useContext(UserContext)
+  const { setName, setAvatar, setLogin, setPublicRepoCount, setFollows } = useContext(UserContext)
 
   async function getRepoList(repoAPI) {
     try {
@@ -20,7 +19,7 @@ const Search = () => {
       const data = await jsonData.json()
       console.log(data)
 
-      // navigate(`/users/${searchName.current}/repos`)
+      navigate(`/users/${searchName.current}/repos`)
     } catch (error) {
       throw new Error(`Get error while getRepoList function, error message: `, error)
     }
@@ -32,6 +31,10 @@ const Search = () => {
       const data = await jsonData.json()
       console.log(data)
       setName(data.name)
+      setAvatar(data.avatar_url)
+      setLogin(data.login)
+      setPublicRepoCount(data.public_repos)
+      setFollows(data.followers)
 
       // navigate(`/users/${searchName.current}/repos`)
       getRepoList(data.repos_url)
@@ -60,7 +63,6 @@ const Search = () => {
             id="filled-basic"
             onChange={(e) => {
               searchName.current = e.target.value
-              // setSearchName(e.target.value)
             }}
             label="Github user name"
             color="primary"

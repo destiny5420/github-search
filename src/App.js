@@ -16,13 +16,21 @@ import Box from '@mui/material/Box'
 import { UserContext } from './assets/js/ContextManager'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { minHeight } from '@mui/system'
 
 function App() {
   const [name, setName] = useState('')
+  const [avatar, setAvatar] = useState('')
+  const [publicRepoCount, setPublicRepoCount] = useState('')
+  const [follows, setFollows] = useState('')
   const userContextData = {
     name,
-    setName
+    setName,
+    avatar,
+    setAvatar,
+    publicRepoCount,
+    setPublicRepoCount,
+    follows,
+    setFollows
   }
 
   return (
@@ -50,6 +58,7 @@ function App() {
             </Routes>
           </Router>
         </Box>
+
         <Footer />
       </Box>
     </UserContext.Provider>
