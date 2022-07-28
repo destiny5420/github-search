@@ -306,8 +306,9 @@ module.exports = function (webpackEnv) {
         }),
         ...(modules.webpackAliases || {}),
         components: path.resolve(__dirname, '../src/components'),
+        pages: path.resolve(__dirname, '../src/pages'),
         images: path.resolve(__dirname, '../src/assets/images'),
-        pages: path.resolve(__dirname, '../src/pages')
+        js: path.resolve(__dirname, '../src/assets/js')
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
