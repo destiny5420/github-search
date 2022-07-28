@@ -1,21 +1,72 @@
 import React from 'react'
-import Box from '@mui/material/Box'
+import { Box, Stack, Link, Typography } from '@mui/material'
 
 const Footer = () => {
-  const COPYRIGHT_TEXT = 'Copyright © Ricky Chuang 2022'
+  const COPYRIGHT_TEXT = 'Copyright © Paper Hsiao'
+
+  const socialMedias = [
+    {
+      key: 1,
+      text: `Home`,
+      link: `/`,
+      target: `_self`
+    },
+    {
+      key: 2,
+      text: `Github`,
+      link: `https://github.com/destiny5420`,
+      target: `_blank`
+    }
+  ]
+
+  const socialMediasElement = socialMedias.map((el) => {
+    return (
+      <Link
+        key={el.key}
+        href={el.link}
+        variant="button"
+        underline="hover"
+        target={el.target}
+        rel="noopener"
+        sx={{
+          color: `#1b1b1b`,
+          display: 'flex',
+          alignItems: `center`
+        }}>
+        <Typography align="center" paragraph={true}>
+          {el.text}
+        </Typography>
+      </Link>
+    )
+  })
+
   return (
     <>
-      <div>
-        <span>Home</span>
-        <span>Github</span>
-      </div>
       <Box
         sx={{
-          display: `flex`,
-          flexDirection: `row`,
-          justifyContent: `center`
+          padding: '0 1rem'
         }}>
-        <p className="c-copyright">{COPYRIGHT_TEXT}</p>
+        <Box
+          sx={{
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'space-between',
+            maxWidth: '760px'
+          }}>
+          <Stack spacing={2} direction="row">
+            {socialMediasElement}
+          </Stack>
+          <Box
+            sx={{
+              display: `flex`,
+              flexDirection: `row`,
+              justifyContent: `center`
+            }}>
+            <Typography align="right" paragraph={true}>
+              {COPYRIGHT_TEXT}
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </>
   )

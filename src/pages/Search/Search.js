@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import { UserContext } from '../../assets/js/ContextManager'
 import { useNavigate } from 'react-router-dom'
+import { Box } from '@mui/material'
+import { height, width } from '@mui/system'
 
 const Search = () => {
   const searchName = useRef('destiny5420')
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
+  const { setName } = useContext(UserContext)
 
   async function getRepoList(repoAPI) {
     try {
@@ -16,7 +20,7 @@ const Search = () => {
       const data = await jsonData.json()
       console.log(data)
 
-      navigate(`/users/${searchName.current}/repos`)
+      // navigate(`/users/${searchName.current}/repos`)
     } catch (error) {
       throw new Error(`Get error while getRepoList function, error message: `, error)
     }
@@ -26,10 +30,13 @@ const Search = () => {
     try {
       const jsonData = await fetch(`https://api.github.com/users/${userName}`)
       const data = await jsonData.json()
+      console.log(data)
+      setName(data.name)
 
+      // navigate(`/users/${searchName.current}/repos`)
       getRepoList(data.repos_url)
     } catch (error) {
-      throw new Error(`Get error while fetchUserData function, error message: `, error)
+      throw new Error(`Get error while fetchUserData function, error message: `, error.message)
     }
   }
 
@@ -41,7 +48,13 @@ const Search = () => {
 
   return (
     <>
-      <div>
+      <Box
+        sx={{
+          margin: '0.75rem auto',
+          width: '100%',
+          maxWidth: '760px',
+          padding: '0 1rem'
+        }}>
         <Stack spacing={2} direction="row">
           <TextField
             id="filled-basic"
@@ -49,15 +62,20 @@ const Search = () => {
               searchName.current = e.target.value
               // setSearchName(e.target.value)
             }}
-            label="Github username"
-            variant="filled"
+            label="Github user name"
+            color="primary"
+            variant="outlined"
+            fullWidth={true}
             ref={searchInputEl}
+            sx={{
+              backgroundColor: '#2c405e'
+            }}
           />
-          <Button variant="contained" onClick={handlerSearch}>
+          <Button disableElevation={true} variant="contained" onClick={handlerSearch}>
             Search
           </Button>
         </Stack>
-      </div>
+      </Box>
     </>
   )
 }
