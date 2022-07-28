@@ -18,6 +18,7 @@ import { UserContext } from './assets/js/ContextManager'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
+  // User Context
   const [name, setName] = useState('')
   const [avatar, setAvatar] = useState('')
   const [publicRepoCount, setPublicRepoCount] = useState('')

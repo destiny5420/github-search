@@ -11,7 +11,7 @@ const Search = () => {
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
-  const { setName, setAvatar, setLogin, setPublicRepoCount, setFollows } = useContext(UserContext)
+  const { setName, setAvatar, setPublicRepoCount, setFollows } = useContext(UserContext)
 
   async function getRepoList(repoAPI) {
     try {
@@ -29,15 +29,13 @@ const Search = () => {
     try {
       const jsonData = await fetch(`https://api.github.com/users/${userName}`)
       const data = await jsonData.json()
-      console.log(data)
       setName(data.name)
       setAvatar(data.avatar_url)
-      setLogin(data.login)
       setPublicRepoCount(data.public_repos)
       setFollows(data.followers)
 
-      // navigate(`/users/${searchName.current}/repos`)
       getRepoList(data.repos_url)
+      console.log(data)
     } catch (error) {
       throw new Error(`Get error while fetchUserData function, error message: `, error.message)
     }
