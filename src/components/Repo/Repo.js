@@ -7,13 +7,15 @@ import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
 
 const Repo = (props) => {
   const { title, starCount, forkCount, languageType } = props
+
   return (
     <>
       <Stack
         sx={{
-          marginTop: '1rem'
+          paddingY: '2.5rem',
+          paddingX: '1rem'
         }}>
-        <Box display="flex" justifyContent="space-between" marginY="0.5rem">
+        <Box display="flex" justifyContent="space-between" marginBottom="0.5rem">
           <Stack spacing={2} direction="row" alignItems="stretch">
             <Typography
               variant="h5"
@@ -54,12 +56,8 @@ const Repo = (props) => {
             </Box>
           </Stack>
         </Box>
-        <Divider
-          sx={{
-            marginY: '1rem'
-          }}
-        />
       </Stack>
+      <Divider />
     </>
   )
 }

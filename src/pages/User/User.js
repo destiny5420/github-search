@@ -1,14 +1,29 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Chip } from '@mui/material'
-import { UserContext } from '../../assets/js/ContextManager'
+import { useSelector } from 'react-redux'
 import Repo from 'components/Repo/Repo'
 
 const User = () => {
-  const { name, avatar, publicRepoCount, follows } = useContext(UserContext)
   const { username } = useParams()
+  const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
+  const { datas } = useSelector((state) => state.repos)
+
+  console.log(`follows: ${follows}`)
 
   console.log(`[USER] re-render`)
+
+  const repoElements = datas.map((data) => {
+    return (
+      <Repo
+        key={data.id}
+        title={data.name}
+        starCount={data.stargazers_count}
+        forkCount={data.forks_count}
+        languageType={data.language}
+      />
+    )
+  })
 
   return (
     <>
@@ -65,7 +80,8 @@ const User = () => {
           </Box>
         </Stack>
         <Divider />
-        <Repo title="note-app" starCount={10} forkCount={10} languageType="HTML" />
+        {repoElements}
+        {/* <Repo title="note-app" starCount={10} forkCount={10} languageType="HTML" /> */}
       </Paper>
     </>
   )

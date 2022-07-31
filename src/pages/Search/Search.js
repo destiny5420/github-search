@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { setName, setAvatar, setPublicRepoCount, setFollows } from '../../redux/user'
+import { setReposData } from '../../redux/repos'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { UserContext } from '../../assets/js/ContextManager'
+
 import { useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 
@@ -11,13 +14,14 @@ const Search = () => {
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
-  const { setName, setAvatar, setPublicRepoCount, setFollows } = useContext(UserContext)
+  const dispatch = useDispatch()
 
   async function getRepoList(repoAPI) {
     try {
       const jsonData = await fetch(repoAPI)
       const data = await jsonData.json()
-      console.log(data)
+
+      dispatch(setReposData(data))
 
       navigate(`/users/${searchName.current}/repos`)
     } catch (error) {
@@ -29,10 +33,11 @@ const Search = () => {
     try {
       const jsonData = await fetch(`https://api.github.com/users/${userName}`)
       const data = await jsonData.json()
-      setName(data.name)
-      setAvatar(data.avatar_url)
-      setPublicRepoCount(data.public_repos)
-      setFollows(data.followers)
+
+      dispatch(setName(data.name))
+      dispatch(setAvatar(data.avatar_url))
+      dispatch(setPublicRepoCount(data.public_repos))
+      dispatch(setFollows(data.followers))
 
       getRepoList(data.repos_url)
       console.log(data)
