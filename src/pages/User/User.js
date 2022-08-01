@@ -1,17 +1,37 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
-import { useSelector } from 'react-redux'
+import { setName, setAvatar, setPublicRepoCount, setFollows } from '../../redux/user'
+import { setReposData } from '../../redux/repos'
+import { useSelector, useDispatch } from 'react-redux'
 import Repo from 'components/Repo/Repo'
+import { FetchUserData, GetRepoList } from '../Search/Search'
 
 const User = () => {
   const { username } = useParams()
   const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
   const { datas } = useSelector((state) => state.repos)
+  const dispatch = useDispatch()
 
-  console.log(`follows: ${follows}`)
+  useEffect(() => {
+    const work = async () => {
+      const userData = await FetchUserData(username)
 
-  console.log(`[USER] re-render`)
+      dispatch(setName(userData.name))
+      dispatch(setAvatar(userData.avatar_url))
+      dispatch(setPublicRepoCount(userData.public_repos))
+      dispatch(setFollows(userData.followers))
+
+      const reposData = await GetRepoList(userData.repos_url)
+      dispatch(setReposData(reposData))
+      // navigate(`/users/${username}/repos`)
+    }
+
+    if (!name || !avatar || !publicRepoCount || !follows) {
+      console.log(`fetch data flow.`)
+      work()
+    }
+  }, [])
 
   const repoElements = datas.map((data) => {
     return (
@@ -22,9 +42,12 @@ const User = () => {
         forkCount={data.forks_count}
         languageType={data.language}
         description={data.description}
+        url={data.url}
       />
     )
   })
+
+  console.log(`[USER] re-render`)
 
   return (
     <>

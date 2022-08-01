@@ -9,6 +9,40 @@ import Button from '@mui/material/Button'
 import { useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 
+async function fetchUserData(userName) {
+  try {
+    const jsonData = await fetch(`https://api.github.com/users/${userName}`)
+    const data = await jsonData.json()
+
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(data)
+      } catch (error) {
+        console.error(error)
+      }
+    })
+  } catch (error) {
+    throw new Error(`Get error while fetchUserData function, error message: `, error.message)
+  }
+}
+
+async function getRepoList(repoAPI) {
+  try {
+    const jsonData = await fetch(repoAPI)
+    const data = await jsonData.json()
+
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(data)
+      } catch (error) {
+        console.error(error)
+      }
+    })
+  } catch (error) {
+    throw new Error(`Get error while getRepoList function, error message: `, error)
+  }
+}
+
 const Search = () => {
   const searchName = useRef('destiny5420')
   const searchInputEl = useRef(null)
@@ -16,39 +50,20 @@ const Search = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  async function getRepoList(repoAPI) {
-    try {
-      const jsonData = await fetch(repoAPI)
-      const data = await jsonData.json()
-
-      console.log(data[0])
-      dispatch(setReposData(data))
-
-      navigate(`/users/${searchName.current}/repos`)
-    } catch (error) {
-      throw new Error(`Get error while getRepoList function, error message: `, error)
-    }
-  }
-
-  async function fetchUserData(userName) {
-    try {
-      const jsonData = await fetch(`https://api.github.com/users/${userName}`)
-      const data = await jsonData.json()
-
-      dispatch(setName(data.name))
-      dispatch(setAvatar(data.avatar_url))
-      dispatch(setPublicRepoCount(data.public_repos))
-      dispatch(setFollows(data.followers))
-
-      getRepoList(data.repos_url)
-      console.log(data)
-    } catch (error) {
-      throw new Error(`Get error while fetchUserData function, error message: `, error.message)
-    }
-  }
-
   function handlerSearch() {
-    fetchUserData(searchName.current)
+    const work = async () => {
+      const userData = await fetchUserData(searchName.current)
+      dispatch(setName(userData.name))
+      dispatch(setAvatar(userData.avatar_url))
+      dispatch(setPublicRepoCount(userData.public_repos))
+      dispatch(setFollows(userData.followers))
+
+      const reposData = await getRepoList(userData.repos_url)
+      dispatch(setReposData(reposData))
+      navigate(`/users/${searchName.current}/repos`)
+    }
+
+    work()
   }
 
   console.log(`[SEARCH] re-render`)
@@ -87,3 +102,5 @@ const Search = () => {
 }
 
 export default Search
+export const FetchUserData = fetchUserData
+export const GetRepoList = getRepoList
