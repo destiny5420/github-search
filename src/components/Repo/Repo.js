@@ -6,14 +6,20 @@ import PropTypes from 'prop-types'
 import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
 
 const Repo = (props) => {
-  const { title, starCount, forkCount, languageType, description } = props
+  const { title, starCount, forkCount, languageType, description, url } = props
+
+  function handlerClick() {
+    console.log(`repo click / url: ${url}`)
+  }
 
   return (
     <>
       <Stack
+        onClick={handlerClick}
         sx={{
           paddingY: '2.5rem',
-          paddingX: '1rem'
+          paddingX: '1rem',
+          cursor: 'pointer'
         }}>
         <Box display="flex" justifyContent="space-between" marginBottom="1rem">
           <Stack spacing={2} direction="row" alignItems="stretch">
@@ -72,7 +78,8 @@ Repo.propTypes = {
   starCount: PropTypes.number,
   forkCount: PropTypes.number,
   languageType: PropTypes.string,
-  description: PropTypes.string
+  description: PropTypes.string,
+  url: PropTypes.string
 }
 
 export default Repo
