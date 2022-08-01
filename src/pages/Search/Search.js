@@ -8,84 +8,7 @@ import Button from '@mui/material/Button'
 
 import { useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-
-async function fetchUserData(userName, token = null) {
-  try {
-    const jsonData = await fetch(
-      `https://api.github.com/users/${userName}`,
-      token
-        ? {
-            headers: {
-              Authorization: `token ${token}`
-            }
-          }
-        : null
-    )
-    const data = await jsonData.json()
-
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(data)
-      } catch (error) {
-        console.error(error)
-      }
-    })
-  } catch (error) {
-    throw new Error(`Get error while fetchUserData function, error message: `, error.message)
-  }
-}
-
-async function getRepoList(repoAPI, token = null) {
-  try {
-    const jsonData = await fetch(
-      repoAPI,
-      token
-        ? {
-            headers: {
-              Authorization: `token ${token}`
-            }
-          }
-        : null
-    )
-    const data = await jsonData.json()
-
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(data)
-      } catch (error) {
-        console.error(error)
-      }
-    })
-  } catch (error) {
-    throw new Error(`Get error while getRepoList function, error message: `, error)
-  }
-}
-
-async function getDetailRepo(userName, repo, token = null) {
-  try {
-    const jsonData = await fetch(
-      `https://api.github.com/repos/${userName}/${repo}`,
-      token
-        ? {
-            headers: {
-              Authorization: `token ${token}`
-            }
-          }
-        : null
-    )
-    const data = await jsonData.json()
-
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(data)
-      } catch (error) {
-        console.error(error)
-      }
-    })
-  } catch (error) {
-    throw new Error(`Get error while getDetailRepo function, error message: `, error)
-  }
-}
+import { FetchUserData, GetRepoList } from 'js/api.js'
 
 const Search = () => {
   const searchName = useRef('destiny5420')
@@ -96,17 +19,17 @@ const Search = () => {
 
   function handlerSearch() {
     const work = async () => {
-      const userData = await fetchUserData(
+      const userData = await FetchUserData(
         searchName.current,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
-      console.log(`userData: `, userData)
+
       dispatch(setName(userData.name))
       dispatch(setAvatar(userData.avatar_url))
       dispatch(setPublicRepoCount(userData.public_repos))
       dispatch(setFollows(userData.followers))
 
-      const reposData = await getRepoList(
+      const reposData = await GetRepoList(
         userData.repos_url,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
@@ -153,6 +76,3 @@ const Search = () => {
 }
 
 export default Search
-export const FetchUserData = fetchUserData
-export const GetRepoList = getRepoList
-export const GetDetailRepo = getDetailRepo

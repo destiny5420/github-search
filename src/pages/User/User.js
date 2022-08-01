@@ -5,7 +5,7 @@ import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
 import { setReposData } from '@redux/repos'
 import { useSelector, useDispatch } from 'react-redux'
 import Repo from 'components/Repo/Repo'
-import { FetchUserData, GetRepoList } from '../Search/Search'
+import { FetchUserData, GetRepoList } from 'js/api.js'
 
 const User = () => {
   const { username } = useParams()

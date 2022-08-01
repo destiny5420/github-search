@@ -8,7 +8,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder'
 import ForkRightIcon from '@mui/icons-material/ForkRight'
 import CloseIcon from '@mui/icons-material/Close'
 import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
-import { GetDetailRepo } from '../Search/Search'
+import { GetDetailRepo } from 'js/api.js'
 
 const Detail = () => {
   const dispatch = useDispatch()

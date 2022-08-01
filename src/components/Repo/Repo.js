@@ -7,7 +7,7 @@ import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
 import { setRepoData } from '@redux/repo'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { GetDetailRepo } from '../../pages/Search/Search'
+import { GetDetailRepo } from 'js/api.js'
 
 const Repo = (props) => {
   const { userName, title, starCount, forkCount, languageType, description } = props
