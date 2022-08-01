@@ -20,7 +20,7 @@ const Repo = (props) => {
             <Typography
               variant="h5"
               sx={{
-                fontWeight: 400
+                fontWeight: 500
               }}>
               {title}
             </Typography>
