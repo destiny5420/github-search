@@ -4,12 +4,28 @@ import StarBorderIcon from '@mui/icons-material/StarBorder'
 import ForkRightIcon from '@mui/icons-material/ForkRight'
 import PropTypes from 'prop-types'
 import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
+import { setRepoData } from '@redux/repo'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { GetDetailRepo } from '../../pages/Search/Search'
 
 const Repo = (props) => {
-  const { title, starCount, forkCount, languageType, description, url } = props
+  const { userName, title, starCount, forkCount, languageType, description } = props
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   function handlerClick() {
-    console.log(`repo click / url: ${url}`)
+    const work = async () => {
+      const data = await GetDetailRepo(
+        userName,
+        title,
+        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+      )
+      dispatch(setRepoData(data))
+      navigate(`/users/${userName}/repos/${data.name}`)
+    }
+
+    work()
   }
 
   return (
@@ -74,12 +90,12 @@ const Repo = (props) => {
 }
 
 Repo.propTypes = {
+  userName: PropTypes.string,
   title: PropTypes.string,
   starCount: PropTypes.number,
   forkCount: PropTypes.number,
   languageType: PropTypes.string,
-  description: PropTypes.string,
-  url: PropTypes.string
+  description: PropTypes.string
 }
 
 export default Repo

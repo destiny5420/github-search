@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
-import { setName, setAvatar, setPublicRepoCount, setFollows } from '../../redux/user'
-import { setReposData } from '../../redux/repos'
+import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
+import { setReposData } from '@redux/repos'
 import { useSelector, useDispatch } from 'react-redux'
 import Repo from 'components/Repo/Repo'
 import { FetchUserData, GetRepoList } from '../Search/Search'
@@ -15,20 +15,24 @@ const User = () => {
 
   useEffect(() => {
     const work = async () => {
-      const userData = await FetchUserData(username)
+      const userData = await FetchUserData(
+        username,
+        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+      )
 
       dispatch(setName(userData.name))
       dispatch(setAvatar(userData.avatar_url))
       dispatch(setPublicRepoCount(userData.public_repos))
       dispatch(setFollows(userData.followers))
 
-      const reposData = await GetRepoList(userData.repos_url)
+      const reposData = await GetRepoList(
+        userData.repos_url,
+        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+      )
       dispatch(setReposData(reposData))
-      // navigate(`/users/${username}/repos`)
     }
 
     if (!name || !avatar || !publicRepoCount || !follows) {
-      console.log(`fetch data flow.`)
       work()
     }
   }, [])
@@ -37,12 +41,12 @@ const User = () => {
     return (
       <Repo
         key={data.id}
+        userName={username}
         title={data.name}
         starCount={data.stargazers_count}
         forkCount={data.forks_count}
         languageType={data.language}
         description={data.description}
-        url={data.url}
       />
     )
   })
@@ -76,12 +80,7 @@ const User = () => {
               }}
             />
             <Stack justifyContent="center">
-              <Typography
-                textAlign="left"
-                variant="h5"
-                sx={{
-                  color: '#444'
-                }}>
+              <Typography textAlign="left" variant="h5" color={`#444`}>
                 {name}
               </Typography>
               <Typography textAlign="left" variant="body2" color="#999" fontWeight={200}>

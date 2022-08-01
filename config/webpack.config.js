@@ -308,7 +308,8 @@ module.exports = function (webpackEnv) {
         components: path.resolve(__dirname, '../src/components'),
         pages: path.resolve(__dirname, '../src/pages'),
         images: path.resolve(__dirname, '../src/assets/images'),
-        js: path.resolve(__dirname, '../src/assets/js')
+        js: path.resolve(__dirname, '../src/assets/js'),
+        '@redux': path.resolve(__dirname, '../src/redux')
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
