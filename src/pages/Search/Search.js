@@ -21,6 +21,7 @@ const Search = () => {
       const jsonData = await fetch(repoAPI)
       const data = await jsonData.json()
 
+      console.log(data[0])
       dispatch(setReposData(data))
 
       navigate(`/users/${searchName.current}/repos`)

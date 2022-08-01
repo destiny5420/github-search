@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
 
 const Repo = (props) => {
-  const { title, starCount, forkCount, languageType } = props
+  const { title, starCount, forkCount, languageType, description } = props
 
   return (
     <>
@@ -15,7 +15,7 @@ const Repo = (props) => {
           paddingY: '2.5rem',
           paddingX: '1rem'
         }}>
-        <Box display="flex" justifyContent="space-between" marginBottom="0.5rem">
+        <Box display="flex" justifyContent="space-between" marginBottom="1rem">
           <Stack spacing={2} direction="row" alignItems="stretch">
             <Typography
               variant="h5"
@@ -29,6 +29,11 @@ const Repo = (props) => {
             </Box>
           </Stack>
           <Typography>27 Jul 2022</Typography>
+        </Box>
+        <Box marginBottom="1rem">
+          <Typography color="#404040" textAlign="left">
+            {description ? description : ` No description`}
+          </Typography>
         </Box>
         <Box>
           <Stack spacing={2} direction="row">
@@ -66,7 +71,8 @@ Repo.propTypes = {
   title: PropTypes.string,
   starCount: PropTypes.number,
   forkCount: PropTypes.number,
-  languageType: PropTypes.string
+  languageType: PropTypes.string,
+  description: PropTypes.string
 }
 
 export default Repo
