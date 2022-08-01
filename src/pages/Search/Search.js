@@ -16,7 +16,7 @@ async function fetchUserData(userName, token = null) {
       token
         ? {
             headers: {
-              Authorization: token
+              Authorization: `token ${token}`
             }
           }
         : null
@@ -42,7 +42,7 @@ async function getRepoList(repoAPI, token = null) {
       token
         ? {
             headers: {
-              Authorization: token
+              Authorization: `token ${token}`
             }
           }
         : null
@@ -68,7 +68,7 @@ async function getDetailRepo(userName, repo, token = null) {
       token
         ? {
             headers: {
-              Authorization: token
+              Authorization: `token ${token}`
             }
           }
         : null
