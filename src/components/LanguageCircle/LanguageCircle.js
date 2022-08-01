@@ -16,7 +16,17 @@ const LanguageCircle = (props) => {
       case 'JavaScript':
         setColor('#F1E05A')
         return
+      case 'CSS':
+        setColor('#563D7C')
+        return
+      case 'C#':
+        setColor('#178601')
+        return
+      case 'SCSS':
+        setColor('#C6538C')
+        return
       default:
+        setColor('transparent')
         return
     }
   }, [type])

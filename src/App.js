@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 // Css
@@ -15,26 +15,9 @@ import Footer from 'components/Footer/Footer.js'
 import Box from '@mui/material/Box'
 
 // Custom
-import { UserContext } from './assets/js/ContextManager'
 import Console from 'js/utils/console.js'
 
 function App() {
-  // User Context
-  const [name, setName] = useState('')
-  const [avatar, setAvatar] = useState('')
-  const [publicRepoCount, setPublicRepoCount] = useState('')
-  const [follows, setFollows] = useState('')
-  const userContextData = {
-    name,
-    setName,
-    avatar,
-    setAvatar,
-    publicRepoCount,
-    setPublicRepoCount,
-    follows,
-    setFollows
-  }
-
   useEffect(() => {
     Console()
   }, [])
@@ -42,34 +25,31 @@ function App() {
   console.log(`[APP] re-render`)
 
   return (
-    <UserContext.Provider value={userContextData}>
+    <Box
+      sx={{
+        backgroundColor: '#314464',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        minHeight: '100vh'
+      }}>
+      <Header />
       <Box
         sx={{
-          backgroundColor: '#314464',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          minHeight: '100vh'
+          flex: '1 1 auto',
+          alignItems: 'center'
         }}>
-        <Header />
-        <Box
-          sx={{
-            display: 'flex',
-            flex: '1 1 auto',
-            alignItems: 'center'
-          }}>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Search />} />
-              <Route path="/users/:username/repos" element={<User />} />
-              <Route path="/users/:username/repos/:repo" element={<Detail />} />
-            </Routes>
-          </Router>
-        </Box>
-
-        <Footer />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Search />} />
+            <Route path="/users/:username/repos" element={<User />} />
+            <Route path="/users/:username/repos/:repo" element={<Detail />} />
+          </Routes>
+        </Router>
       </Box>
-    </UserContext.Provider>
+      <Footer />
+    </Box>
   )
 }
 
