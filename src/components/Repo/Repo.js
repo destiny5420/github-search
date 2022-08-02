@@ -28,6 +28,7 @@ const Repo = (props) => {
     work()
   }
 
+  console.log(`[REPO] re-render`)
   return (
     <>
       <Stack
@@ -84,7 +85,6 @@ const Repo = (props) => {
           </Stack>
         </Box>
       </Stack>
-      <Divider />
     </>
   )
 }
