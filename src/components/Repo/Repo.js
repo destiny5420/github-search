@@ -63,6 +63,7 @@ const Repo = (props) => {
         title,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
+
       dispatch(setRepoData(data))
       navigate(`/users/${userName}/repos/${data.name}`)
     }
