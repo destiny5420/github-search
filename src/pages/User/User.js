@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
 import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
-import { setReposData } from '@redux/repos'
 import { useSelector, useDispatch } from 'react-redux'
-import Repo from 'components/Repo/Repo'
-import { FetchUserData, GetRepoList, GetRepoList10 } from 'js/api.js'
+import RepoList from 'pages/RepoList/RepoList'
+import { FetchUserData } from 'js/api.js'
 
 const User = () => {
   const { username } = useParams()
-  const progressRef = useRef(null)
-  const [page, setPage] = useState(1)
-  const [repoData, setRepoData] = useState([])
+
   const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
-  const { datas } = useSelector((state) => state.repos)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -33,50 +29,9 @@ const User = () => {
     }
   }, [])
 
-  useEffect(() => {
-    const work = async () => {
-      const newRepoList = await GetRepoList10(username, page)
-      setRepoData((old) => [...old, ...newRepoList])
-    }
-
-    work()
-  }, [page])
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       console.log(`entries: `, entries)
-  //     },
-  //     {
-  //       root: null,
-  //       rootMargin: '0px',
-  //       threshold: 0
-  //     }
-  //   )
-  // })
-
-  function handlerLoadNewData() {
-    console.log(`handlerLoadNewData`)
-    setPage((old) => old + 1)
-  }
-
-  const repoElements = repoData.map((data, index) => {
-    return (
-      <Box key={data.id}>
-        <Repo
-          userName={username}
-          title={data.name}
-          starCount={data.stargazers_count}
-          forkCount={data.forks_count}
-          languageType={data.language}
-          description={data.description}
-        />
-        {repoData.length - 1 !== index && <Divider />}
-      </Box>
-    )
-  })
-
   console.log(`[USER] re-render`)
+
+  function handlerFollowButton() {}
 
   return (
     <>
@@ -116,7 +71,7 @@ const User = () => {
                   {publicRepoCount} repos・{follows} followers
                 </Typography>
               </Stack>
-              <Button onClick={handlerLoadNewData} variant="contained">
+              <Button onClick={handlerFollowButton} variant="contained">
                 Follow
               </Button>
             </Stack>
@@ -124,7 +79,7 @@ const User = () => {
           <Box></Box>
         </Stack>
         <Divider />
-        {repoElements}
+        <RepoList />
       </Paper>
     </>
   )
