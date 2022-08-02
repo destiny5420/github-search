@@ -18,6 +18,11 @@ const User = () => {
         username,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
+
+      if (!userData) {
+        return
+      }
+
       dispatch(setName(userData.name))
       dispatch(setAvatar(userData.avatar_url))
       dispatch(setPublicRepoCount(userData.public_repos))

@@ -33,22 +33,22 @@ function App() {
         alignItems: 'stretch',
         minHeight: '100vh'
       }}>
-      <Header />
-      <Box
-        sx={{
-          display: 'flex',
-          flex: '1 1 auto',
-          alignItems: 'center'
-        }}>
-        <Router>
+      <Router>
+        <Header />
+        <Box
+          sx={{
+            display: 'flex',
+            flex: '1 1 auto',
+            alignItems: 'center'
+          }}>
           <Routes>
             <Route path="/" element={<Search />} />
             <Route path="/users/:username/repos" element={<User />} />
             <Route path="/users/:username/repos/:repo" element={<Detail />} />
           </Routes>
-        </Router>
-      </Box>
-      <Footer />
+        </Box>
+        <Footer />
+      </Router>
     </Box>
   )
 }
