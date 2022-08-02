@@ -1,6 +1,6 @@
 async function fetchUserData(userName, token = null) {
   try {
-    const jsonData = await fetch(
+    const response = await fetch(
       `https://api.github.com/users/${userName}`,
       token
         ? {
@@ -10,11 +10,12 @@ async function fetchUserData(userName, token = null) {
           }
         : null
     )
-    const data = await jsonData.json()
+
+    const json = await response.json()
 
     return new Promise((resolve, reject) => {
       try {
-        resolve(data)
+        resolve(json)
       } catch (error) {
         console.error(error)
       }
@@ -26,7 +27,7 @@ async function fetchUserData(userName, token = null) {
 
 async function getRepoList(repoAPI, token = null) {
   try {
-    const jsonData = await fetch(
+    const response = await fetch(
       repoAPI,
       token
         ? {
@@ -36,11 +37,11 @@ async function getRepoList(repoAPI, token = null) {
           }
         : null
     )
-    const data = await jsonData.json()
+    const json = await response.json()
 
     return new Promise((resolve, reject) => {
       try {
-        resolve(data)
+        resolve(json)
       } catch (error) {
         console.error(error)
       }
@@ -78,7 +79,7 @@ async function getRepoList10(userName, page, token = null) {
 
 async function getDetailRepo(userName, repo, token = null) {
   try {
-    const jsonData = await fetch(
+    const response = await fetch(
       `https://api.github.com/repos/${userName}/${repo}`,
       token
         ? {
@@ -88,11 +89,11 @@ async function getDetailRepo(userName, repo, token = null) {
           }
         : null
     )
-    const data = await jsonData.json()
+    const json = await response.json()
 
     return new Promise((resolve, reject) => {
       try {
-        resolve(data)
+        resolve(json)
       } catch (error) {
         console.error(error)
       }
