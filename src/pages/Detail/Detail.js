@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Paper, Stack, Avatar, Typography } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setRepoData } from '@redux/repo'
+import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
+import { GetDetailRepo } from 'js/api.js'
+
+// UI
+import { Box, Paper, Stack, Avatar, Typography, Link } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import ForkRightIcon from '@mui/icons-material/ForkRight'
 import CloseIcon from '@mui/icons-material/Close'
-import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
-import { GetDetailRepo } from 'js/api.js'
 
 const Detail = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { username, repo } = useParams()
   const { name } = useSelector((state) => state.user)
-  const { fullName, avatar, description, starCount, forkCount, languageType } = useSelector(
-    (state) => state.repo
-  )
+  const { fullName, avatar, description, starCount, forkCount, languageType, htmlUrl } =
+    useSelector((state) => state.repo)
 
   useEffect(() => {
     const work = async () => {
@@ -26,10 +28,20 @@ const Detail = () => {
         repo,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
+
       dispatch(setRepoData(data))
     }
 
-    if (!fullName || !avatar || !description || !starCount || !forkCount || !languageType) {
+    if (
+      !fullName ||
+      !avatar ||
+      !description ||
+      !starCount ||
+      !forkCount ||
+      !languageType ||
+      !githubUrl ||
+      !htmlUrl
+    ) {
       work()
     }
   }, [])
@@ -90,30 +102,44 @@ const Detail = () => {
             {description ? description : `No description.`}
           </Typography>
         </Box>
-        <Stack spacing={2} direction="row">
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Typography display="flex" justifyContent="center" alignItems="center">
-              <StarBorderIcon fontSize="small" />
-            </Typography>
-            <Typography display="flex" justifyContent="center" alignItems="center">
-              {starCount}
-            </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Typography display="flex" justifyContent="center" alignItems="center">
-              <ForkRightIcon fontSize="small" />
-            </Typography>
-            <Typography display="flex" justifyContent="center" alignItems="center">
-              {forkCount}
-            </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <LanguageCircle type={languageType} />
-            <Typography display="flex" justifyContent="center" alignItems="center">
-              {languageType}
-            </Typography>
-          </Box>
-        </Stack>
+        <Box display={`flex`} justifyContent={`space-between`}>
+          <Stack spacing={2} direction="row">
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography display="flex" justifyContent="center" alignItems="center">
+                <StarBorderIcon fontSize="small" />
+              </Typography>
+              <Typography display="flex" justifyContent="center" alignItems="center">
+                {starCount}
+              </Typography>
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography display="flex" justifyContent="center" alignItems="center">
+                <ForkRightIcon fontSize="small" />
+              </Typography>
+              <Typography display="flex" justifyContent="center" alignItems="center">
+                {forkCount}
+              </Typography>
+            </Box>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <LanguageCircle type={languageType} />
+              <Typography display="flex" justifyContent="center" alignItems="center">
+                {languageType}
+              </Typography>
+            </Box>
+          </Stack>
+          <Link
+            href={htmlUrl}
+            target={`_blank`}
+            color={`#000`}
+            sx={{
+              transition: `color 0.25s`,
+              '&:hover': {
+                color: '#00000075'
+              }
+            }}>
+            <GitHubIcon />
+          </Link>
+        </Box>
       </Paper>
     </>
   )
