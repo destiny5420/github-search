@@ -16,10 +16,18 @@ export const repoSlice = createSlice({
   initialState,
   reducers: {
     setRepoData: (state, action) => {
-      const { full_name, description, stargazers_count, forks_count, language, owner, created_at } =
-        action.payload
+      const {
+        full_name,
+        description,
+        stargazers_count,
+        forks_count,
+        language,
+        owner,
+        created_at,
+        html_url
+      } = action.payload
 
-      const { html_url, avatar_url } = owner
+      const { avatar_url } = owner
 
       state.fullName = full_name
       state.avatar = avatar_url
@@ -27,7 +35,7 @@ export const repoSlice = createSlice({
       state.starCount = stargazers_count
       state.forkCount = forks_count
       state.languageType = language
-      state.githubUrl = html_url
+      state.htmlUrl = html_url
       state.date = created_at
     }
   }
