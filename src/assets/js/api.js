@@ -11,6 +11,10 @@ async function fetchUserData(userName, token = null) {
         : null
     )
 
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`)
+    }
+
     const json = await response.json()
 
     return new Promise((resolve, reject) => {
@@ -21,7 +25,7 @@ async function fetchUserData(userName, token = null) {
       }
     })
   } catch (error) {
-    throw new Error(`Get error while fetchUserData function, error message: `, error.message)
+    console.error(error)
   }
 }
 

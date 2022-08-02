@@ -47,23 +47,35 @@ const Search = () => {
     setSearching(true)
 
     const work = async () => {
-      const userData = await FetchUserData(
-        searchName.current,
-        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-      )
+      try {
+        const userData = await FetchUserData(
+          searchName.current,
+          process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+        )
 
-      dispatch(setName(userData.name))
-      dispatch(setAvatar(userData.avatar_url))
-      dispatch(setPublicRepoCount(userData.public_repos))
-      dispatch(setFollows(userData.followers))
+        if (!userData) {
+          navigate(`/users/${searchName.current}/repos`)
+          return
+        }
 
-      const reposData = await GetRepoList(
-        userData.repos_url,
-        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-      )
-      dispatch(setReposData(reposData))
-      setSearching(false)
-      navigate(`/users/${searchName.current}/repos`)
+        dispatch(setName(userData.name))
+        dispatch(setAvatar(userData.avatar_url))
+        dispatch(setPublicRepoCount(userData.public_repos))
+        dispatch(setFollows(userData.followers))
+
+        const reposData = await GetRepoList(
+          userData.repos_url,
+          process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+        )
+
+        dispatch(setReposData(reposData))
+        navigate(`/users/${searchName.current}/repos`)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        console.log(`finally`)
+        setSearching(false)
+      }
     }
 
     work()

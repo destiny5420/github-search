@@ -24,16 +24,25 @@ const RepoList = () => {
   // Effect
   useEffect(() => {
     const fetchRepoDataBy10 = async () => {
-      fetchDataDone.current = false
+      try {
+        fetchDataDone.current = false
 
-      const newRepoList = await GetRepoList10(
-        username,
-        page,
-        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-      )
+        const newRepoList = await GetRepoList10(
+          username,
+          page,
+          process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+        )
 
-      setRepoData((old) => [...old, ...newRepoList])
-      fetchDataDone.current = true
+        if (!newRepoList) {
+          return
+        }
+
+        setRepoData((old) => [...old, ...newRepoList])
+      } catch (error) {
+        console.error(error)
+      } finally {
+        fetchDataDone.current = true
+      }
     }
 
     fetchRepoDataBy10()
