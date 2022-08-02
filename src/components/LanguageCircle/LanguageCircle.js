@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 const LanguageCircle = (props) => {
@@ -7,7 +7,6 @@ const LanguageCircle = (props) => {
   const color = useMemo(() => getColor(type), [type])
 
   function getColor(type) {
-    console.log(`getColor function`)
     switch (type) {
       case 'HTML':
         return '#E34C25'
