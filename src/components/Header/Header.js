@@ -1,9 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // UI
-import { Paper, Typography } from '@mui/material'
+import { Box, Paper, Typography, ButtonBase } from '@mui/material'
 
 const Header = () => {
+  const navigate = useNavigate()
+
+  function handlerLogoClick() {
+    navigate('/')
+  }
+
   return (
     <>
       <Paper
@@ -16,16 +23,13 @@ const Header = () => {
         }}
         variant="elevation"
         elevation={1}>
-        <Typography
-          align="left"
-          variant="h6"
-          sx={{
-            maxWidth: '760px',
-            margin: '0 auto',
-            padding: '0.5rem 1rem'
-          }}>
-          GITHUB SEARCH
-        </Typography>
+        <Box maxWidth={`760px`} margin={`0 auto`} padding={`0.5rem 1rem`}>
+          <ButtonBase onClick={handlerLogoClick}>
+            <Typography align="left" variant="h6">
+              GITHUB SEARCH
+            </Typography>
+          </ButtonBase>
+        </Box>
       </Paper>
     </>
   )
