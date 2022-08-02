@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import PropTypes from 'prop-types'
 
 const LanguageCircle = (props) => {
@@ -48,4 +48,4 @@ LanguageCircle.propTypes = {
   type: PropTypes.string
 }
 
-export default LanguageCircle
+export default memo(LanguageCircle)
