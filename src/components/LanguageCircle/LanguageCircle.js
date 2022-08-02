@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 const LanguageCircle = (props) => {
   const { type } = props
-  const [color, setColor] = useState('#fff')
 
-  useEffect(() => {
+  const color = useMemo(() => getColor(type), [type])
+
+  function getColor(type) {
     switch (type) {
       case 'HTML':
-        setColor('#E34C25')
-        return
+        return '#E34C25'
       case 'Vue':
-        setColor('#3FB883')
-        return
+        return '#3FB883'
       case 'JavaScript':
-        setColor('#F1E05A')
-        return
+        return '#F1E05A'
       case 'CSS':
-        setColor('#563D7C')
-        return
+        return '#563D7C'
       case 'C#':
-        setColor('#178601')
-        return
+        return '#178601'
       case 'SCSS':
-        setColor('#C6538C')
-        return
+        return '#C6538C'
       default:
-        setColor('transparent')
-        return
+        return 'transparent'
     }
-  }, [type])
+  }
 
   console.log(`[LANGUAGE CIRCLE] re-render`)
   return (
@@ -48,4 +42,4 @@ LanguageCircle.propTypes = {
   type: PropTypes.string
 }
 
-export default LanguageCircle
+export default memo(LanguageCircle)

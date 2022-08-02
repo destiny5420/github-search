@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Stack, Typography, Divider, Chip } from '@mui/material'
+import React, { useMemo } from 'react'
+import { Box, Stack, Typography, Chip } from '@mui/material'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import ForkRightIcon from '@mui/icons-material/ForkRight'
 import PropTypes from 'prop-types'
@@ -10,9 +10,51 @@ import { useNavigate } from 'react-router-dom'
 import { GetDetailRepo } from 'js/api.js'
 
 const Repo = (props) => {
-  const { userName, title, starCount, forkCount, languageType, description } = props
+  const { userName, title, starCount, forkCount, languageType, description, createAt } = props
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const createAtDate = useMemo(() => formatDate(createAt), [createAt])
+
+  function formatDate(createAt) {
+    const formatMonth = (month) => {
+      switch (month) {
+        case '01':
+          return 'Jan'
+        case '02':
+          return 'Feb'
+        case '03':
+          return 'Mar'
+        case '04':
+          return 'Apr'
+        case '05':
+          return 'May'
+        case '06':
+          return 'Jun'
+        case '07':
+          return 'Jul'
+        case '08':
+          return 'Aug'
+        case '09':
+          return 'Sep'
+        case '10':
+          return 'Oct'
+        case '11':
+          return 'Nov'
+        case '12':
+          return 'Dec'
+        default:
+          return 'Jan'
+      }
+    }
+
+    const splitAry = createAt.split('T')[0].split('-')
+    const year = splitAry[0]
+    const month = formatMonth(splitAry[1])
+    const date = parseInt(splitAry[2])
+
+    return `${date} ${month} ${year}`
+  }
 
   function handlerClick() {
     const work = async () => {
@@ -28,6 +70,7 @@ const Repo = (props) => {
     work()
   }
 
+  console.log(`[REPO] re-render`)
   return (
     <>
       <Stack
@@ -50,7 +93,15 @@ const Repo = (props) => {
               <Chip size="small" label="Public" variant="outlined" />
             </Box>
           </Stack>
-          <Typography>27 Jul 2022</Typography>
+          <Typography
+            textAlign={`right`}
+            display={`flex`}
+            flexDirection={`column`}
+            justifyContent={`center`}
+            variant={`caption`}
+            color={`#827c7c`}>
+            {createAtDate}
+          </Typography>
         </Box>
         <Box marginBottom="1rem">
           <Typography color="#404040" textAlign="left">
@@ -84,7 +135,6 @@ const Repo = (props) => {
           </Stack>
         </Box>
       </Stack>
-      <Divider />
     </>
   )
 }
@@ -95,7 +145,8 @@ Repo.propTypes = {
   starCount: PropTypes.number,
   forkCount: PropTypes.number,
   languageType: PropTypes.string,
-  description: PropTypes.string
+  description: PropTypes.string,
+  createAt: PropTypes.string
 }
 
 export default Repo

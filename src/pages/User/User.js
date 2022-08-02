@@ -2,15 +2,14 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
 import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
-import { setReposData } from '@redux/repos'
 import { useSelector, useDispatch } from 'react-redux'
-import Repo from 'components/Repo/Repo'
-import { FetchUserData, GetRepoList } from 'js/api.js'
+import RepoList from 'pages/RepoList/RepoList'
+import { FetchUserData } from 'js/api.js'
 
 const User = () => {
   const { username } = useParams()
+
   const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
-  const { datas } = useSelector((state) => state.repos)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -19,17 +18,10 @@ const User = () => {
         username,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
-
       dispatch(setName(userData.name))
       dispatch(setAvatar(userData.avatar_url))
       dispatch(setPublicRepoCount(userData.public_repos))
       dispatch(setFollows(userData.followers))
-
-      const reposData = await GetRepoList(
-        userData.repos_url,
-        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-      )
-      dispatch(setReposData(reposData))
     }
 
     if (!name || !avatar || !publicRepoCount || !follows) {
@@ -37,21 +29,9 @@ const User = () => {
     }
   }, [])
 
-  const repoElements = datas.map((data) => {
-    return (
-      <Repo
-        key={data.id}
-        userName={username}
-        title={data.name}
-        starCount={data.stargazers_count}
-        forkCount={data.forks_count}
-        languageType={data.language}
-        description={data.description}
-      />
-    )
-  })
-
   console.log(`[USER] re-render`)
+
+  function handlerFollowButton() {}
 
   return (
     <>
@@ -91,14 +71,15 @@ const User = () => {
                   {publicRepoCount} repos・{follows} followers
                 </Typography>
               </Stack>
-              <Button variant="contained">Follow</Button>
+              <Button onClick={handlerFollowButton} variant="contained">
+                Follow
+              </Button>
             </Stack>
           </Stack>
           <Box></Box>
         </Stack>
         <Divider />
-        {repoElements}
-        {/* <Repo title="note-app" starCount={10} forkCount={10} languageType="HTML" /> */}
+        <RepoList />
       </Paper>
     </>
   )
