@@ -18,6 +18,7 @@ const RepoList = () => {
   useEffect(() => {
     const work = async () => {
       const newRepoList = await GetRepoList10(username, page)
+
       setRepoData((old) => [...old, ...newRepoList])
     }
 
@@ -35,6 +36,7 @@ const RepoList = () => {
           forkCount={data.forks_count}
           languageType={data.language}
           description={data.description}
+          createAt={data.created_at}
         />
         {repoData.length - 1 !== index && <Divider />}
       </Box>
