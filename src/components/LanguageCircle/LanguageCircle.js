@@ -25,7 +25,6 @@ const LanguageCircle = (props) => {
     }
   }
 
-  console.log(`[LANGUAGE CIRCLE] re-render`)
   return (
     <div
       style={{

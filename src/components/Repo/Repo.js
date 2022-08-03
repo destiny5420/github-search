@@ -71,7 +71,6 @@ const Repo = (props) => {
     work()
   }
 
-  console.log(`[REPO] re-render`)
   return (
     <>
       <Stack

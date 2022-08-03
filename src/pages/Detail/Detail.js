@@ -55,8 +55,6 @@ const Detail = () => {
     navigate(-1)
   }
 
-  console.log(`[DETAIL] re-render`)
-
   return (
     <>
       <Paper

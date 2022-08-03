@@ -37,8 +37,6 @@ const User = () => {
     }
   }, [])
 
-  console.log(`[USER] re-render`)
-
   function handlerFollowButton() {
     navigate('/')
   }
