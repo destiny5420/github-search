@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, memo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { initReposData, addReposData } from '@redux/repos'
+import { addReposData, cantFindRepos } from '@redux/repos'
 
 import Repo from 'components/Repo/Repo'
 import { GetRepoList10 } from 'js/api.js'
@@ -17,8 +17,8 @@ const RepoList = () => {
 
   // Redux
   const dispatch = useDispatch()
-  const { publicRepoCount } = useSelector((state) => state.user)
-  const { datas, page } = useSelector((state) => state.repos)
+  const { publicRepoCount, findUser } = useSelector((state) => state.user)
+  const { datas, page, findRepos } = useSelector((state) => state.repos)
 
   // Router
   const { username } = useParams()
@@ -49,6 +49,10 @@ const RepoList = () => {
   // Custom
   async function fetchRepoDataBy10(requiredPage) {
     try {
+      if (!findUser) return
+
+      if (!findRepos) return
+
       if (!fetchDataDone.current) return
 
       fetchDataDone.current = false
@@ -59,7 +63,8 @@ const RepoList = () => {
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
 
-      if (!newRepoList) {
+      if (newRepoList.message && newRepoList.message === 'Not Found') {
+        dispatch(cantFindRepos())
         return
       }
 

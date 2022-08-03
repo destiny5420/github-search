@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  findUser: true,
   fullName: '',
   avatar: '',
   description: '',
@@ -15,6 +16,11 @@ export const repoSlice = createSlice({
   name: 'repo',
   initialState,
   reducers: {
+    cantFindUser: (state) => {
+      state.findUser = false
+      state.avatar = `https://pbs.twimg.com/profile_images/792371348114845697/YYKpi3s6_400x400.jpg`
+      state.description = `Not found user.`
+    },
     setRepoData: (state, action) => {
       const {
         full_name,
@@ -41,5 +47,5 @@ export const repoSlice = createSlice({
   }
 })
 
-export const { setRepoData } = repoSlice.actions
+export const { setRepoData, cantFindUser } = repoSlice.actions
 export default repoSlice.reducer

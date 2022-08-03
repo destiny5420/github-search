@@ -9,7 +9,7 @@ import { FetchUserData } from 'js/api.js'
 const User = () => {
   const { username } = useParams()
 
-  const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
+  const { name, avatar, publicRepoCount, follows, findUser } = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,6 +20,10 @@ const User = () => {
       )
 
       if (!userData) {
+        dispatch(
+          setAvatar(`https://pbs.twimg.com/profile_images/792371348114845697/YYKpi3s6_400x400.jpg`)
+        )
+
         return
       }
 
@@ -29,7 +33,7 @@ const User = () => {
       dispatch(setFollows(userData.followers))
     }
 
-    if (!name || !avatar || !publicRepoCount || !follows) {
+    if ((!name || !avatar || !publicRepoCount || !follows) && findUser) {
       work()
     }
   }, [])

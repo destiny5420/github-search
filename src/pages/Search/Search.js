@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
+import { setName, setAvatar, setPublicRepoCount, setFollows, cantFindUser } from '@redux/user'
 import { initReposData } from '@redux/repos'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -55,6 +55,8 @@ const Search = () => {
         )
 
         if (!userData) {
+          dispatch(cantFindUser())
+
           navigate(`/users/${searchName.current}/repos`)
           return
         }

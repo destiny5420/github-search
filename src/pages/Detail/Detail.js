@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setRepoData } from '@redux/repo'
+import { setRepoData, cantFindUser } from '@redux/repo'
 import LanguageCircle from 'components/LanguageCircle/LanguageCircle'
 import { GetDetailRepo } from 'js/api.js'
 
@@ -28,6 +28,11 @@ const Detail = () => {
         repo,
         process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
       )
+
+      if (data.message && data.message === 'Not Found') {
+        dispatch(cantFindUser())
+        return
+      }
 
       dispatch(setRepoData(data))
     }
