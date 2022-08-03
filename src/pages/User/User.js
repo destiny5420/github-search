@@ -51,7 +51,8 @@ const User = () => {
           width: '90%',
           maxWidth: '760px',
           padding: '0 2rem',
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
+          boxSizing: 'border-box'
         }}>
         <Stack
           spacing={2}
