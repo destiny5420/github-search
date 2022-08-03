@@ -13,7 +13,7 @@ import { FetchUserData, GetRepoList } from 'js/api.js'
 const Search = () => {
   const [searching, setSearching] = useState(false)
 
-  const searchName = useRef('destiny5420')
+  const searchName = useRef('')
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()

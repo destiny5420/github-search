@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
-import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
+import { setName, setAvatar, setPublicRepoCount, setFollows, cantFindUser } from '@redux/user'
 import { useSelector, useDispatch } from 'react-redux'
 import RepoList from 'pages/RepoList/RepoList'
 import { FetchUserData } from 'js/api.js'
@@ -10,6 +10,8 @@ const User = () => {
   const { username } = useParams()
 
   const { name, avatar, publicRepoCount, follows, findUser } = useSelector((state) => state.user)
+
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,10 +22,7 @@ const User = () => {
       )
 
       if (!userData) {
-        dispatch(
-          setAvatar(`https://pbs.twimg.com/profile_images/792371348114845697/YYKpi3s6_400x400.jpg`)
-        )
-
+        dispatch(cantFindUser())
         return
       }
 
@@ -40,7 +39,9 @@ const User = () => {
 
   console.log(`[USER] re-render`)
 
-  function handlerFollowButton() {}
+  function handlerFollowButton() {
+    navigate('/')
+  }
 
   return (
     <>
@@ -75,14 +76,21 @@ const User = () => {
               <Typography textAlign="left" variant="body2" color="#999" fontWeight={200}>
                 @{username}
               </Typography>
-              <Stack spacing={2} marginBottom="1rem">
+              <Stack spacing={2}>
                 <Typography variant="body2" color="#999" fontWeight={200} textAlign="left">
                   {publicRepoCount} repos・{follows} followers
                 </Typography>
               </Stack>
-              <Button onClick={handlerFollowButton} variant="contained">
-                Follow
-              </Button>
+              {!findUser && (
+                <Button
+                  sx={{
+                    marginTop: `1rem`
+                  }}
+                  onClick={handlerFollowButton}
+                  variant="contained">
+                  Search another User
+                </Button>
+              )}
             </Stack>
           </Stack>
           <Box></Box>
