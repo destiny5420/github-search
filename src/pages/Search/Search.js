@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
-import { setReposData } from '@redux/repos'
+import { initReposData } from '@redux/repos'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -13,7 +13,7 @@ import { FetchUserData, GetRepoList } from 'js/api.js'
 const Search = () => {
   const [searching, setSearching] = useState(false)
 
-  const searchName = useRef('')
+  const searchName = useRef('destiny5420')
   const searchInputEl = useRef(null)
 
   const navigate = useNavigate()
@@ -45,6 +45,7 @@ const Search = () => {
     }
 
     setSearching(true)
+    dispatch(initReposData())
 
     const work = async () => {
       try {
@@ -63,17 +64,10 @@ const Search = () => {
         dispatch(setPublicRepoCount(userData.public_repos))
         dispatch(setFollows(userData.followers))
 
-        const reposData = await GetRepoList(
-          userData.repos_url,
-          process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-        )
-
-        dispatch(setReposData(reposData))
         navigate(`/users/${searchName.current}/repos`)
       } catch (error) {
         console.error(error)
       } finally {
-        console.log(`finally`)
         setSearching(false)
       }
     }
