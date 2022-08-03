@@ -1,62 +1,41 @@
 import React, { useEffect, useRef, useState, memo } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { addReposData, cantFindRepos } from '@redux/repos'
+
 import Repo from 'components/Repo/Repo'
 import { GetRepoList10 } from 'js/api.js'
+
+// UI
 import { Box, Typography, Divider } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 const RepoList = () => {
-  // State
-
-  const [repoData, setRepoData] = useState([])
-  const [page, setPage] = useState(1)
-
   // Ref
   const progressRef = useRef(null)
   const fetchDataDone = useRef(true)
 
   // Redux
-  const { publicRepoCount } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const { publicRepoCount, findUser } = useSelector((state) => state.user)
+  const { datas, page, findRepos } = useSelector((state) => state.repos)
 
+  // Router
   const { username } = useParams()
-
-  // Effect
-  useEffect(() => {
-    const fetchRepoDataBy10 = async () => {
-      try {
-        fetchDataDone.current = false
-
-        const newRepoList = await GetRepoList10(
-          username,
-          page,
-          process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
-        )
-
-        if (!newRepoList) {
-          return
-        }
-
-        setRepoData((old) => [...old, ...newRepoList])
-      } catch (error) {
-        console.error(error)
-      } finally {
-        fetchDataDone.current = true
-      }
-    }
-
-    fetchRepoDataBy10()
-  }, [page])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && page < publicRepoCount && fetchDataDone.current) {
-          setPage(page + 1)
+          fetchRepoDataBy10(page + 1)
         }
       },
       { root: null, rootMargin: '0px', threshold: 0 }
     )
+
+    if (datas.length === 0) {
+      fetchRepoDataBy10(page + 1)
+    }
 
     if (progressRef.current) {
       observer.observe(progressRef.current)
@@ -67,8 +46,38 @@ const RepoList = () => {
     }
   })
 
+  // Custom
+  async function fetchRepoDataBy10(requiredPage) {
+    try {
+      if (!findUser) return
+
+      if (!findRepos) return
+
+      if (!fetchDataDone.current) return
+
+      fetchDataDone.current = false
+
+      const newRepoList = await GetRepoList10(
+        username,
+        requiredPage,
+        process.env.REACT_APP_GITHUB_READ_PROJECT_TOKEN
+      )
+
+      if (newRepoList.message && newRepoList.message === 'Not Found') {
+        dispatch(cantFindRepos())
+        return
+      }
+
+      dispatch(addReposData({ data: newRepoList, page: requiredPage }))
+    } catch (error) {
+      console.error(error)
+    } finally {
+      fetchDataDone.current = true
+    }
+  }
+
   // Dom Element
-  const repoElements = repoData.map((data, index) => {
+  const repoElements = datas.map((data, index) => {
     return (
       <Box key={data.id}>
         <Repo
@@ -80,14 +89,14 @@ const RepoList = () => {
           description={data.description}
           createAt={data.created_at}
         />
-        {repoData.length - 1 !== index && <Divider />}
+        {datas.length - 1 !== index && <Divider />}
       </Box>
     )
   })
 
   console.log(`[REPO-LIST] re-render`)
 
-  return repoData.length > 0 ? (
+  return datas.length > 0 ? (
     <>
       {repoElements}
       {10 * page < publicRepoCount && (

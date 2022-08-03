@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Box, Paper, Stack, Avatar, Typography, Divider, Button } from '@mui/material'
-import { setName, setAvatar, setPublicRepoCount, setFollows } from '@redux/user'
+import { setName, setAvatar, setPublicRepoCount, setFollows, cantFindUser } from '@redux/user'
 import { useSelector, useDispatch } from 'react-redux'
 import RepoList from 'pages/RepoList/RepoList'
 import { FetchUserData } from 'js/api.js'
@@ -9,7 +9,9 @@ import { FetchUserData } from 'js/api.js'
 const User = () => {
   const { username } = useParams()
 
-  const { name, avatar, publicRepoCount, follows } = useSelector((state) => state.user)
+  const { name, avatar, publicRepoCount, follows, findUser } = useSelector((state) => state.user)
+
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,6 +22,7 @@ const User = () => {
       )
 
       if (!userData) {
+        dispatch(cantFindUser())
         return
       }
 
@@ -29,14 +32,16 @@ const User = () => {
       dispatch(setFollows(userData.followers))
     }
 
-    if (!name || !avatar || !publicRepoCount || !follows) {
+    if ((!name || !avatar || !publicRepoCount || !follows) && findUser) {
       work()
     }
   }, [])
 
   console.log(`[USER] re-render`)
 
-  function handlerFollowButton() {}
+  function handlerFollowButton() {
+    navigate('/')
+  }
 
   return (
     <>
@@ -46,7 +51,8 @@ const User = () => {
           width: '90%',
           maxWidth: '760px',
           padding: '0 2rem',
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
+          boxSizing: 'border-box'
         }}>
         <Stack
           spacing={2}
@@ -71,14 +77,21 @@ const User = () => {
               <Typography textAlign="left" variant="body2" color="#999" fontWeight={200}>
                 @{username}
               </Typography>
-              <Stack spacing={2} marginBottom="1rem">
+              <Stack spacing={2}>
                 <Typography variant="body2" color="#999" fontWeight={200} textAlign="left">
                   {publicRepoCount} repos・{follows} followers
                 </Typography>
               </Stack>
-              <Button onClick={handlerFollowButton} variant="contained">
-                Follow
-              </Button>
+              {!findUser && (
+                <Button
+                  sx={{
+                    marginTop: `1rem`
+                  }}
+                  onClick={handlerFollowButton}
+                  variant="contained">
+                  Search another User
+                </Button>
+              )}
             </Stack>
           </Stack>
           <Box></Box>
