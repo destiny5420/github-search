@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
 import { useDispatch } from 'react-redux'
 import { setName, setAvatar, setPublicRepoCount, setFollows, cantFindUser } from '@redux/user'
 import { initReposData } from '@redux/repos'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 
-import { useNavigate } from 'react-router-dom'
-import { Box } from '@mui/material'
+import { Stack, TextField, Button, Box } from '@mui/material'
+
 import { FetchUserData, GetRepoList } from 'js/api.js'
 
 const Search = () => {

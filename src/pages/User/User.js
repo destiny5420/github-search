@@ -50,17 +50,35 @@ const User = () => {
           margin: '0.75rem auto',
           width: '90%',
           maxWidth: '760px',
-          padding: '0 2rem',
+          padding: {
+            xs: '0 1rem',
+            sm: '0 2rem'
+          },
           backgroundColor: '#fff',
           boxSizing: 'border-box'
         }}>
         <Stack
-          spacing={2}
+          spacing={{
+            xs: 0,
+            sm: 2
+          }}
           direction="row"
+          justifyContent={{
+            xs: 'center',
+            sm: 'flex-start'
+          }}
           sx={{
             padding: '4rem 0'
           }}>
-          <Stack spacing={5} direction="row">
+          <Stack
+            spacing={{
+              xs: 3,
+              sm: 5
+            }}
+            direction={{
+              xs: 'column',
+              sm: 'row'
+            }}>
             <Avatar
               alt="avatar"
               variant="circular"

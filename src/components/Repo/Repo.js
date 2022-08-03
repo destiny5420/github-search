@@ -81,8 +81,25 @@ const Repo = (props) => {
           paddingX: '1rem',
           cursor: 'pointer'
         }}>
-        <Box display="flex" justifyContent="space-between" marginBottom="1rem">
-          <Stack spacing={2} direction="row" alignItems="stretch">
+        <Box
+          display="flex"
+          justifyContent={{
+            xs: 'flex-start',
+            sm: 'space-between'
+          }}
+          flexDirection={{
+            xs: 'column',
+            sm: 'row'
+          }}
+          marginBottom="1rem">
+          <Stack
+            spacing={2}
+            direction="row"
+            alignItems="stretch"
+            marginBottom={{
+              xs: '0.5rem',
+              sm: 0
+            }}>
             <Typography
               variant="h5"
               sx={{
@@ -95,7 +112,10 @@ const Repo = (props) => {
             </Box>
           </Stack>
           <Typography
-            textAlign={`right`}
+            textAlign={{
+              xs: 'left',
+              sm: 'right'
+            }}
             display={`flex`}
             flexDirection={`column`}
             justifyContent={`center`}

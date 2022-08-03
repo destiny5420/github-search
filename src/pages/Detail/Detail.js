@@ -65,7 +65,8 @@ const Detail = () => {
           width: '90%',
           maxWidth: '760px',
           padding: '2rem',
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
+          boxSizing: 'border-box'
         }}>
         <Box
           marginBottom={`1.5rem`}
