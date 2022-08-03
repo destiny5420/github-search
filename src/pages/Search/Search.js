@@ -77,8 +77,6 @@ const Search = () => {
     work()
   }
 
-  console.log(`[SEARCH] re-render`)
-
   return (
     <>
       <Box

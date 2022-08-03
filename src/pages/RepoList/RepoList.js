@@ -94,8 +94,6 @@ const RepoList = () => {
     )
   })
 
-  console.log(`[REPO-LIST] re-render`)
-
   return datas.length > 0 ? (
     <>
       {repoElements}

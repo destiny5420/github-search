@@ -22,8 +22,6 @@ function App() {
     Console()
   }, [])
 
-  console.log(`[APP] re-render`)
-
   return (
     <Box
       sx={{
