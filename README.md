@@ -22,7 +22,14 @@ The [**React**](https://reactjs.org/) app designed with Material UI that could:
    - [On AWS S3](https://github.com/destiny5420/github-search#on-aws-s3)
    - [On Your Computer](https://github.com/destiny5420/github-search#on-your-computer)
 2. [**Architecture Design & Explanation**](https://github.com/destiny5420/github-search#architecture-design--explanation)
-   - [index.js]
+   - [App.js](https://github.com/destiny5420/github-search#appjsfor-direct-route)：for direct route
+   - [Search.js](https://github.com/destiny5420/github-search#searchjssearch-github-repository-by-username)：search github repository by username
+   - [User.js](https://github.com/destiny5420/github-search#userjsfor-display-GitHub-user-information-&-all-public-repositories)：for display GitHub user information & all public repositories
+   - [Detail.js](https://github.com/destiny5420/github-search#detailjsfor-display-repository-details)：For display repository details
+3. [**Learn More**](https://github.com/destiny5420/github-search#learn-more)
+   - [Rate Link](https://github.com/destiny5420/github-search#rate-limit)
+   - [Responsive Web Design](https://github.com/destiny5420/github-search#responsive-web-design)
+4. [**LICENSE:MIT**](https://github.com/destiny5420/github-search#licensemit)
 
 ## How to use
 
@@ -68,3 +75,70 @@ yarn dev
 http://localhost:3000 will automatically open on your computer.
 
 ## Architecture Design & Explanation
+
+### [App.js]()：for direct route
+
+- [Search](https://github.com/destiny5420/github-search/blob/master/pages/Search/Search.js)：route a `/`
+- [User](https://github.com/destiny5420/github-search/blob/master/pages/User/User.js)：route a `/users/{username}/repos`
+- [Detail](https://github.com/destiny5420/github-search/blob/master/pages/Detail/Detail.js)：route a `/users/{username}/repos/{repo}`
+
+```jsx
+// App.js
+return (
+  ...
+  <Routes>
+    <Route path="/" element={<Search />} />
+    <Route path="/users/:username/repos" element={<User />} />
+    <Route path="/users/:username/repos/:repo" element={<Detail />} />
+  </Routes>
+  ...
+)
+```
+
+### [Search.js]()：search github repository by username
+
+<img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/search-bar.png" width='100%' height='100%'/>
+
+1. SearchBar
+   - user can input username for he want to search repository
+   - can't submit if there's not input
+   - user `useRef()` to prevent re-render while user is typing
+   - store data that fetch from API in [Redux](https://redux.js.org/) to prevent API recall if we need the same data later
+
+### [User.js]()：for display GitHub user information & all public repositories
+
+<img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/user.jpg" width='100%' height='100%'/>
+
+1. User Component
+
+- first check data we need had already saved in Redux store
+  - if yes, get data from store
+  - if no, fetch data from API and save to store
+    - GitHub User: `GET /users/{username}`
+    - Repos: `GET /users/{username}/repos`
+
+2. RepoList Component
+
+- use `useRef()` & [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) to achieve infinite scroll feature
+
+<img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/infinite-scroll.png" width='100%' height='100%'/>
+
+- we fetch 10 pieces of data each times then store in redux store, so when user got to `Detail` and back, we won't re-fetch data from API
+
+### [Detail.js]()：For display repository details
+
+<img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/detail.png" width='100%' height='100%'/>
+
+## Learn More
+
+### Rate Limit
+
+With access tokens, GitHub Rest API Rate Limit could up to 5000 requests pre hour, if no, jate Limit only up to 60 requests pre hour! [For more information](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting).
+
+### Responsive Web Design
+
+🧀 Thanks to [Material UI](https://mui.com/)
+
+## License：MIT
+
+This package is [MIT licensed](https://github.com/destiny5420/github-search/blob/master/LICENSE).
