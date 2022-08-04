@@ -76,11 +76,11 @@ http://localhost:3000 will automatically open on your computer.
 
 ## Architecture Design & Explanation
 
-### [App.js]()：for direct route
+### [App.js](https://github.com/destiny5420/github-search/blob/master/src/App.js)：for direct route
 
-- [Search](https://github.com/destiny5420/github-search/blob/master/pages/Search/Search.js)：route a `/`
-- [User](https://github.com/destiny5420/github-search/blob/master/pages/User/User.js)：route a `/users/{username}/repos`
-- [Detail](https://github.com/destiny5420/github-search/blob/master/pages/Detail/Detail.js)：route a `/users/{username}/repos/{repo}`
+- [Search](https://github.com/destiny5420/github-search/blob/master/src/pages/Search/Search.js)：route a `/`
+- [User](https://github.com/destiny5420/github-search/blob/master/src/pages/User/User.js)：route a `/users/{username}/repos`
+- [Detail](https://github.com/destiny5420/github-search/blob/master/src/pages/Detail/Detail.js)：route a `/users/{username}/repos/{repo}`
 
 ```jsx
 // App.js
@@ -95,7 +95,7 @@ return (
 )
 ```
 
-### [Search.js]()：search github repository by username
+### [Search.js](https://github.com/destiny5420/github-search/blob/master/src/pages/Search/Search.js)：search github repository by username
 
 <img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/search-bar.png" width='100%' height='100%'/>
 
@@ -105,7 +105,7 @@ return (
    - user `useRef()` to prevent re-render while user is typing
    - store data that fetch from API in [Redux](https://redux.js.org/) to prevent API recall if we need the same data later
 
-### [User.js]()：for display GitHub user information & all public repositories
+### [User.js](https://github.com/destiny5420/github-search/blob/master/src/pages/User/User.js)：for display GitHub user information & all public repositories
 
 <img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/user.jpg" width='100%' height='100%'/>
 
@@ -125,7 +125,7 @@ return (
 
 - we fetch 10 pieces of data each times then store in redux store, so when user got to `Detail` and back, we won't re-fetch data from API
 
-### [Detail.js]()：For display repository details
+### [Detail.js](https://github.com/destiny5420/github-search/blob/master/src/pages/Detail/Detail.js)：For display repository details
 
 <img src="https://github.com/destiny5420/github-search/blob/master/.github/assets/detail.png" width='100%' height='100%'/>
 
