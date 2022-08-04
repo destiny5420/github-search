@@ -68,7 +68,7 @@
     "dev": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "deploy": "aws s3 sync ./build s3://github-search.stackergames.org --delete --profile paper"
+    "deploy": "aws s3 sync ./build s3://github-search-service.stackergames.org --delete --profile paper"
   },
   "eslintConfig": {
     "extends": [
