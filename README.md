@@ -24,7 +24,7 @@ The [**React**](https://reactjs.org/) app designed with Material UI that could:
 2. [**Architecture Design & Explanation**](https://github.com/destiny5420/github-search#architecture-design--explanation)
    - [App.js](https://github.com/destiny5420/github-search#appjsfor-direct-route)：for direct route
    - [Search.js](https://github.com/destiny5420/github-search#searchjssearch-github-repository-by-username)：search github repository by username
-   - [User.js](https://github.com/destiny5420/github-search#userjsfor-display-gitHub-user-information-all-public-repositories)：for display GitHub user information & all public repositories
+   - [User.js](https://github.com/destiny5420/github-search#userjsfor-display-github-user-information-all-public-repositories)：for display GitHub user information & all public repositories
    - [Detail.js](https://github.com/destiny5420/github-search#detailjsfor-display-repository-details)：For display repository details
 3. [**Learn More**](https://github.com/destiny5420/github-search#learn-more)
    - [Rate Link](https://github.com/destiny5420/github-search#rate-limit)
